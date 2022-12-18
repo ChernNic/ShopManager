@@ -1,0 +1,16 @@
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.exe
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.deps.json
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.runtimeconfig.json
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.runtimeconfig.dev.json
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.dll
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.pdb
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.AssemblyReference.cache
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.AssemblyInfoInputs.cache
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.AssemblyInfo.cs
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.CoreCompileInputs.cache
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.CopyComplete
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.dll
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.pdb
+C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.genruntimeconfig.cache
