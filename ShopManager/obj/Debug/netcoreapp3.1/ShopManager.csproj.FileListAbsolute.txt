@@ -14,3 +14,20 @@ C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager
 C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.dll
 C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.pdb
 C:\Users\Николай\OneDrive\Рабочий стол\C# Projects\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.genruntimeconfig.cache
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.exe
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.deps.json
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.runtimeconfig.json
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.runtimeconfig.dev.json
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.dll
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\ShopManager.pdb
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\chern\Desktop\ShopManager\ShopManager\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.AssemblyReference.cache
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.AssemblyInfoInputs.cache
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.AssemblyInfo.cs
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.CoreCompileInputs.cache
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.csproj.CopyComplete
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.dll
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.pdb
+C:\Users\chern\Desktop\ShopManager\ShopManager\obj\Debug\netcoreapp3.1\ShopManager.genruntimeconfig.cache
