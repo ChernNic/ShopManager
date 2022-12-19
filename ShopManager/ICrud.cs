@@ -8,7 +8,7 @@ namespace ShopManager
     {
         void Create();
         void Read();
-        void Update();
-        void Delete();
+        void Update(int Index);
+        void Delete(int Index);
     }
 }

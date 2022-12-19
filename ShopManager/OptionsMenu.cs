@@ -5,7 +5,7 @@ namespace ShopManager
 {
     static class OptionsMenu
     {
-        private static void DisplayOption<T>(List<T> options , int selectedIndex, int offset = 0)
+        public static void DisplayOption(string[] options , int selectedIndex, int offset = 0)
         {
             Console.ResetColor();
             if (selectedIndex == 0)
