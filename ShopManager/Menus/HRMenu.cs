@@ -5,11 +5,11 @@ using System.Threading;
 
 namespace ShopManager.Menus
 {
-    public class AdminMenu : ICrud
+    public class HRMenu : ICrud
     {
         string Login;
 
-        public AdminMenu(string login)
+        public HRMenu(string login)
         {
             Login = login;
         }
@@ -30,7 +30,7 @@ namespace ShopManager.Menus
             {
                 if (user.Login == Login)
                 {
-                    if(user.Name != null)
+                    if (user.Name != null)
                     {
                         label = user.Name;
                     }
@@ -42,50 +42,34 @@ namespace ShopManager.Menus
             }
 
             Console.SetCursorPosition(0, 0);
-            Console.BackgroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Меню Администратора: {Login}                                                                                                              ");
+            Console.WriteLine($"Меню Менеджера персонала: {Login}                                                                                                              ");
             Console.ResetColor();
 
             Console.SetCursorPosition(89, 1);
-            Console.WriteLine("| F1 - Создание пользователя  |");
+            Console.WriteLine("| F1 - Привязка сотрудника    |");
             Console.SetCursorPosition(89, 2);
-            Console.WriteLine("| F2 - Изменение пользователя |");
+            Console.WriteLine("| F2 - Изменение сотрудника   |");
             Console.SetCursorPosition(89, 3);
-            Console.WriteLine("| Del - Удаление польователя  |");
+            Console.WriteLine("| Del - Удаление сотрудника   |");
             Console.SetCursorPosition(89, 4);
             Console.WriteLine("| Esc - Возварт к авторизации |");
 
             Console.SetCursorPosition(0, 1);
-            Console.WriteLine("ID Логин                      Роль");
+            Console.WriteLine("Логин             ФИО           ");
 
             for (int i = 0; i < options.Length; i++)
             {
                 string role = "";
-                options[i] = users[i].ID + "  " + users[i].Login;
-                
+                options[i] = users[i].Login;
+
                 Console.SetCursorPosition(0, i + 2);
-                Console.WriteLine(users[i].ID + "  " + users[i].Login);
-                switch (users[i].Role)
-                {
-                    case (int)Roles.Admin:
-                        role = "Администратор"; 
-                        break;
-                    case (int)Roles.HR:
-                        role = "Mенеджер персонала";
-                        break;
-                    case (int)Roles.Manger:
-                        role = "Бугалтер";
-                        break;
-                    case (int)Roles.WarehouseManager:
-                        role = "Cклад-менеджер";
-                        break;
-                    case (int)Roles.Cashier:
-                        role = "Кассир";
-                        break;
-                }
+                Console.WriteLine(users[i].Login);
+
                 Console.SetCursorPosition(30, i + 2);
-                Console.WriteLine(role);
+                Console.WriteLine(users[i].Name + " " + users[i].Surname + " " + users[i].Patronymic );
+
                 Console.ResetColor();
             }
 
@@ -127,7 +111,7 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.F2:
-;                       Update(SelectedIndex);
+                        ; Update(SelectedIndex);
                         break;
 
                     case ConsoleKey.Delete:
@@ -135,7 +119,7 @@ namespace ShopManager.Menus
                         {
                             Delete(SelectedIndex);
                             Display();
-                        }         
+                        }
                         break;
 
                     case ConsoleKey.LeftArrow:
@@ -143,7 +127,7 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.Escape:
-                        
+
                         break;
                 }
             }
@@ -225,7 +209,7 @@ namespace ShopManager.Menus
                                                 isCorrect = false;
                                                 break;
                                             }
-                                            else if (id < 0 )
+                                            else if (id < 0)
                                             {
                                                 Console.SetCursorPosition(2, 1);
                                                 Console.ForegroundColor = ConsoleColor.Red;
@@ -777,5 +761,3 @@ namespace ShopManager.Menus
         }
     }
 }
-
-
