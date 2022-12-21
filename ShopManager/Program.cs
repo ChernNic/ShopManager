@@ -10,7 +10,7 @@ namespace ShopManager
         {
             List<User> list = FileManager.ReadUsersFromFile();
 
-            new AdminMenu().Menu();
+            new AdminMenu().Display();
         }
     }
 }

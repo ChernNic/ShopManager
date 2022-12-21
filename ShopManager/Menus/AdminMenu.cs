@@ -7,35 +7,76 @@ namespace ShopManager.Menus
 {
     public class AdminMenu : ICrud
     {
-        public void Menu()
+        int SelectedIndex;
+
+        public void Display()
         {
+            Console.Clear();
 
             List<User> users = FileManager.ReadUsersFromFile();
-            int SelectedIndex = 0;
             string[] options = new string[users.Count];
+
+            Console.CursorVisible = false;
+
+            Console.SetCursorPosition(0, 0);
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Меню Администратора                                                                                                                 ");
+            Console.ResetColor();
+
+            Console.SetCursorPosition(89, 1);
+            Console.WriteLine("| F1 - Создание пользователя  |");
+            Console.SetCursorPosition(89, 2);
+            Console.WriteLine("| F2 - Изменение пользователя |");
+            Console.SetCursorPosition(89, 3);
+            Console.WriteLine("| Del - Удаление польователя  |");
+            Console.SetCursorPosition(89, 4);
+            Console.WriteLine("| Esc - Возварт к авторизации |");
+
+            Console.SetCursorPosition(0, 1);
+            Console.WriteLine("ID Логин                      Роль");
 
             for (int i = 0; i < options.Length; i++)
             {
-
-                options[i] = users[i].ID + " " + users[i].Login;
+                string role = "";
+                options[i] = users[i].ID + "  " + users[i].Login;
                 
-                Console.SetCursorPosition(0, i);
-                Console.WriteLine(users[i].ID + " " + users[i].Login);
-                Console.SetCursorPosition(20, i);
-                Console.WriteLine(users[i].Role);
+                Console.SetCursorPosition(0, i + 2);
+                Console.WriteLine(users[i].ID + "  " + users[i].Login);
+                switch (users[i].Role)
+                {
+                    case (int)Roles.Admin:
+                        role = "Администратор"; 
+                        break;
+                    case (int)Roles.HR:
+                        role = "Mенеджер персонала";
+                        break;
+                    case (int)Roles.Manger:
+                        role = "Бугалтер";
+                        break;
+                    case (int)Roles.WarehouseManager:
+                        role = "Cклад-менеджер";
+                        break;
+                    case (int)Roles.Cashier:
+                        role = "Кассир";
+                        break;
+                }
+                Console.SetCursorPosition(30, i + 2);
+                Console.WriteLine(role);
                 Console.ResetColor();
             }
 
             while (true)
             {
-                OptionsMenu.DisplayOption(options, SelectedIndex);
+                OptionsMenu.DisplayOption(options, SelectedIndex, 2);
                 switch (Console.ReadKey(true).Key)
                 {
+
                     case ConsoleKey.DownArrow:
                         SelectedIndex++;
-                        if (SelectedIndex > 3)
+                        if (SelectedIndex > users.Count - 1)
                         {
-                            SelectedIndex = 3;
+                            SelectedIndex = users.Count - 1;
                         }
                         break;
 
@@ -47,6 +88,39 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.Enter:
+                        Console.SetCursorPosition(0, SelectedIndex + 3);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                        Console.WriteLine($"  Пароль пользователя: {users[SelectedIndex].Password}                      ");
+
+                        Console.ReadKey(true);
+                        Console.Clear();
+                        Console.ResetColor();
+                        Display();
+                        break;
+
+                    case ConsoleKey.F1:
+                        Create();
+                        break;
+
+                    case ConsoleKey.F2:
+;                       Update(SelectedIndex);
+                        break;
+
+                    case ConsoleKey.Delete:
+                        if (users[SelectedIndex].ID != 0)
+                        {
+                            Delete(SelectedIndex);
+                            Display();
+                        }         
+                        break;
+
+                    case ConsoleKey.LeftArrow:
+                        Read();
+                        break;
+
+                    case ConsoleKey.Escape:
+                        
                         break;
                 }
             }
@@ -166,6 +240,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(19, 1);
                                 Console.Write(id);
+
+                                SelectedIndex = 1;
                                 break;
 
                             case 1:
@@ -221,6 +297,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(22, 2);
                                 Console.Write(login);
+
+                                SelectedIndex = 2;
                                 break;
 
 
@@ -262,6 +340,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(23, 3);
                                 Console.Write(password);
+
+                                SelectedIndex = 3;
                                 break;
 
                             case 3:
@@ -280,7 +360,7 @@ namespace ShopManager.Menus
 
                                         foreach (User user in users)
                                         {
-                                            if (role < 0 || role > 5)
+                                            if (role < 0 || role > 4)
                                             {
                                                 Console.SetCursorPosition(2, 4);
                                                 Console.ForegroundColor = ConsoleColor.Red;
@@ -348,13 +428,72 @@ namespace ShopManager.Menus
                             Create();
                         }
                         break;
+                    case ConsoleKey.Escape:
+                        Display();
+                        break;
                 }
             }
         }
 
         public void Read()
         {
-            throw new NotImplementedException();
+            Console.CursorVisible = true;
+
+            Console.Clear();
+
+            List<User> users = FileManager.ReadUsersFromFile();
+            List<User> FoundUsers = null;
+
+            Console.WriteLine("Меню поиска. ");
+
+            Console.Write("Поиск: ");
+            string search = Console.ReadLine();
+
+            FoundUsers = users.FindAll(x => x.ID == 1);
+            FoundUsers = users.FindAll(x => x.Login.Contains(search));
+
+            if (FoundUsers != null)
+            {
+                int i = 0;
+                foreach (User user in FoundUsers)
+                {
+                    string role = "";
+                    i++;
+
+                    Console.SetCursorPosition(0, i + 1);
+
+                    switch (user.Role)
+                    {
+                        case (int)Roles.Admin:
+                            role = "Администратор";
+                            break;
+                        case (int)Roles.HR:
+                            role = "Mенеджер персонала";
+                            break;
+                        case (int)Roles.Manger:
+                            role = "Бугалтер";
+                            break;
+                        case (int)Roles.WarehouseManager:
+                            role = "Cклад-менеджер";
+                            break;
+                        case (int)Roles.Cashier:
+                            role = "Кассир";
+                            break;
+                    }
+                    Console.WriteLine(user.ID + "  " + user.Login + " Роль: " + role);
+                    Console.ResetColor();
+
+                    Console.WriteLine("Нажмите любую клавишу для выхода.");
+                    Console.ReadKey(true);
+                    Display();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ничего не найдено. Нажмите любую клавишу для выхода.");
+                Console.ReadKey(true);
+                Display();
+            }
         }
 
         public void Update(int Index)
@@ -441,7 +580,7 @@ namespace ShopManager.Menus
                                                 Thread.Sleep(1000);
                                                 Console.SetCursorPosition(2, 1);
                                                 Console.ResetColor();
-                                                Console.Write("ID пользователя:                                                ");
+                                                Console.Write("ID пользователя:                                                  ");
                                                 isCorrect = false;
                                                 break;
                                             }
@@ -471,6 +610,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(19, 1);
                                 Console.Write(id);
+
+                                SelectedIndex = 1;
                                 break;
 
                             case 1:
@@ -526,6 +667,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(22, 2);
                                 Console.Write(login);
+
+                                SelectedIndex = 2;
                                 break;
 
 
@@ -567,6 +710,8 @@ namespace ShopManager.Menus
                                 Console.ResetColor();
                                 Console.SetCursorPosition(23, 3);
                                 Console.Write(password);
+
+                                SelectedIndex = 3;
                                 break;
 
                             case 3:
@@ -639,10 +784,10 @@ namespace ShopManager.Menus
                         Console.ResetColor();
                         Console.ReadLine();
                         Create();
-
                         break;
 
                     case ConsoleKey.Escape:
+                        Display();
                         break;
                 }
             }

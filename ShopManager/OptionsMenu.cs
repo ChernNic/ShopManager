@@ -18,8 +18,14 @@ namespace ShopManager
                 Console.SetCursorPosition(0, selectedIndex + offset + 1);
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(options[selectedIndex + 1]);
-
+                try
+                {
+                    Console.WriteLine(options[selectedIndex + 1]);
+                }
+                catch (Exception)
+                {
+                    
+                }
             }
             else
             {
@@ -31,7 +37,14 @@ namespace ShopManager
                 Console.SetCursorPosition(0, selectedIndex + offset);
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine(options[selectedIndex]);
+                try
+                {
+                    Console.WriteLine(options[selectedIndex]);
+                }
+                catch (Exception)
+                {
+
+                }
 
                 Console.SetCursorPosition(0, selectedIndex + offset + 1);
                 Console.BackgroundColor = ConsoleColor.Black;
