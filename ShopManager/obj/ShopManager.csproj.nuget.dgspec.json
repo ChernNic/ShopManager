@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\ShopManager.csproj": {}
+    "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\ShopManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\ShopManager.csproj": {
+    "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\ShopManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\ShopManager.csproj",
+        "projectUniqueName": "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\ShopManager.csproj",
         "projectName": "ShopManager",
-        "projectPath": "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\ShopManager.csproj",
-        "packagesPath": "C:\\Users\\Николай\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\obj\\",
+        "projectPath": "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\ShopManager.csproj",
+        "packagesPath": "C:\\Users\\chern\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Николай\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\chern\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -64,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.425\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.414\\RuntimeIdentifierGraph.json"
         }
       }
     }

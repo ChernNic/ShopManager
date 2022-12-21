@@ -11,12 +11,14 @@ namespace ShopManager
         public int ID;
         public string Name;
         public int Cost;
+        public int Amount;
 
-        public Product(int id, string name, int cost)
+        public Product(int id, string name, int cost, int amount)
         {
             ID = id;
             Name = name;
-            Cost = cost;   
+            Cost = cost;
+            Amount = amount;
         }
     }
 }

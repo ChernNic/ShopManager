@@ -39,5 +39,20 @@ namespace ShopManager
             }
             return users;
         }
+
+        static public List<T> ReadFromFile<T>(string path)
+        {
+            List<T> result;
+            if (!File.Exists(path))
+            {
+                FileStream fileStream = File.Create(path);
+                fileStream.Dispose();
+            }
+
+            string resultInfo = File.ReadAllText(path);
+            result = JsonConvert.DeserializeObject<List<T>>(resultInfo);
+
+            return result;
+        }
     }
 }
