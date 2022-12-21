@@ -57,18 +57,17 @@ namespace ShopManager.Menus
             Console.WriteLine("| Esc - Возварт к авторизации |");
 
             Console.SetCursorPosition(0, 1);
-            Console.WriteLine("Логин             ФИО           ");
+            Console.WriteLine("Логин                              ФИО           ");
 
             for (int i = 0; i < options.Length; i++)
             {
-                string role = "";
                 options[i] = users[i].Login;
 
                 Console.SetCursorPosition(0, i + 2);
                 Console.WriteLine(users[i].Login);
 
                 Console.SetCursorPosition(30, i + 2);
-                Console.WriteLine(users[i].Name + " " + users[i].Surname + " " + users[i].Patronymic );
+                Console.WriteLine(users[i].Surname + " " + users[i].Name + " " + users[i].Patronymic );
 
                 Console.ResetColor();
             }
@@ -98,7 +97,35 @@ namespace ShopManager.Menus
                         Console.SetCursorPosition(0, SelectedIndex + 3);
                         Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                        Console.WriteLine($"  Пароль пользователя: {users[SelectedIndex].Password}                      ");
+                        if(users[SelectedIndex].DateOfBirth == null)
+                        {
+                            Console.WriteLine($"  Дата рождения: не назначена");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"  Дата рождения: {users[SelectedIndex].DateOfBirth}");
+                        }
+
+                        Console.WriteLine($"  Зарплата: {users[SelectedIndex].Salary}");
+
+                        if (users[SelectedIndex].PassportInfo == 0)
+                        {
+                            Console.WriteLine($"  Серия и номер паспорта: не назначена");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"  Серия и номер паспорта: {users[SelectedIndex].PassportInfo}");
+                        }
+
+
+                        if (users[SelectedIndex].Job == null)
+                        {
+                            Console.WriteLine($"  Должность: не назначена");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"  Должность: {users[SelectedIndex].Job}");
+                        }
 
                         Console.ReadKey(true);
                         Console.Clear();
@@ -107,19 +134,15 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.F1:
-                        Create();
+                        Update(SelectedIndex);
                         break;
 
                     case ConsoleKey.F2:
-                        ; Update(SelectedIndex);
+                        Update(SelectedIndex);
                         break;
 
                     case ConsoleKey.Delete:
-                        if (users[SelectedIndex].ID != 0)
-                        {
-                            Delete(SelectedIndex);
-                            Display();
-                        }
+                        Delete(SelectedIndex);
                         break;
 
                     case ConsoleKey.LeftArrow:
@@ -135,325 +158,12 @@ namespace ShopManager.Menus
 
         public void Create()
         {
-            Console.Clear();
-
-            Console.CursorVisible = false;
-
-            List<User> users = FileManager.ReadUsersFromFile();
-            int SelectedIndex = 0;
-
-            int id = -1;
-            string login = "";
-            string password = "";
-            int role = -1;
-
-            Console.WriteLine("Меню добовления нового пользователя");
-            Console.SetCursorPosition(2, 1);
-            Console.Write("ID пользователя: ");
-            Console.SetCursorPosition(2, 2);
-            Console.Write("Логин пользователя: ");
-            Console.SetCursorPosition(2, 3);
-            Console.Write("Пароль пользователя: ");
-            Console.SetCursorPosition(2, 4);
-            Console.Write("Роль пользователя: ");
-
-            while (true)
-            {
-                Arrows.DisplayArrow(SelectedIndex, 1);
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.DownArrow:
-                        SelectedIndex++;
-                        if (SelectedIndex > 3)
-                        {
-                            SelectedIndex = 3;
-                        }
-                        break;
-
-                    case ConsoleKey.UpArrow:
-                        if (SelectedIndex > 0)
-                        {
-                            SelectedIndex--;
-                        }
-                        break;
-
-                    case ConsoleKey.Enter:
-                        Console.CursorVisible = true;
-                        switch (SelectedIndex)
-                        {
-                            case 0:
-                                Console.SetCursorPosition(19, 1);
-                                Console.Write("                 ");
-
-                                bool isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    try
-                                    {
-                                        Console.SetCursorPosition(19, 1);
-                                        id = Convert.ToInt32(Console.ReadLine());
-
-                                        foreach (User user in users)
-                                        {
-                                            if (user.ID == id)
-                                            {
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("ID пользователя: Ошибка. Пользователь с таким ID уже существует.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ResetColor();
-                                                Console.Write("ID пользователя:                                                ");
-                                                Console.SetCursorPosition(19, 1);
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else if (id < 0)
-                                            {
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("ID пользователя: Ошибка. ID не может быть меньше нуля.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ResetColor();
-                                                Console.Write("ID пользователя:                                                ");
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                isCorrect = true;
-                                            }
-                                        }
-
-                                    }
-                                    catch (Exception)
-                                    {
-                                        Console.SetCursorPosition(2, 1);
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("ID пользователя: Ошибка. Неправельный ввод.");
-                                        Thread.Sleep(1000);
-                                        Console.ResetColor();
-                                        Console.SetCursorPosition(2, 1);
-                                        Console.Write("ID пользователя:                                                ");
-                                    }
-                                }
-
-                                Console.SetCursorPosition(19, 1);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(id);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(19, 1);
-                                Console.Write(id);
-
-                                SelectedIndex = 1;
-                                break;
-
-                            case 1:
-                                Console.SetCursorPosition(22, 2);
-                                Console.Write("                                                       ");
-
-                                isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    Console.SetCursorPosition(22, 2);
-                                    login = Console.ReadLine();
-
-                                    foreach (User user in users)
-                                    {
-                                        if (user.Login == login)
-                                        {
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.Write("Логин пользователя: Ошибка. Пользователь с таким логином уже существует.");
-                                            Thread.Sleep(1000);
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ResetColor();
-                                            Console.Write("Логин пользователя:                                                                         ");
-                                            Console.SetCursorPosition(22, 2);
-                                            isCorrect = false;
-                                            break;
-                                        }
-                                        else if (login == "")
-                                        {
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.Write("Логин пользователя: Ошибка. Пользователь не может быть с пустым логином.");
-                                            Thread.Sleep(1000);
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ResetColor();
-                                            Console.Write("Логин пользователя:                                                                         ");
-                                            Console.SetCursorPosition(22, 2);
-                                            isCorrect = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            isCorrect = true;
-                                        }
-                                    }
-                                }
-
-                                Console.SetCursorPosition(22, 2);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(login);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(22, 2);
-                                Console.Write(login);
-
-                                SelectedIndex = 2;
-                                break;
-
-
-                            case 2:
-                                Console.SetCursorPosition(23, 3);
-                                Console.Write("                                                       ");
-
-                                isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    Console.SetCursorPosition(23, 3);
-                                    password = Console.ReadLine();
-
-
-                                    if (password == "")
-                                    {
-                                        Console.SetCursorPosition(2, 3);
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Пароль пользователя: Ошибка. Пользователь не может быть с пустым паролем.");
-                                        Thread.Sleep(1000);
-                                        Console.SetCursorPosition(2, 3);
-                                        Console.ResetColor();
-                                        Console.Write("Пароль пользователя:                                                                         ");
-                                        Console.SetCursorPosition(23, 3);
-                                        isCorrect = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        isCorrect = true;
-                                    }
-                                }
-
-                                Console.SetCursorPosition(23, 3);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(password);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(23, 3);
-                                Console.Write(password);
-
-                                SelectedIndex = 3;
-                                break;
-
-                            case 3:
-
-                                Console.SetCursorPosition(21, 4);
-                                Console.Write("                 ");
-
-                                isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    try
-                                    {
-                                        Console.SetCursorPosition(21, 4);
-                                        role = Convert.ToInt32(Console.ReadLine());
-
-                                        foreach (User user in users)
-                                        {
-                                            if (role < 0 || role > 4)
-                                            {
-                                                Console.SetCursorPosition(2, 4);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("Роль пользователя: Ошибка. Такой роли не существует.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 4);
-                                                Console.ResetColor();
-                                                Console.Write("Роль пользователя:                                                ");
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                isCorrect = true;
-                                            }
-                                        }
-
-                                    }
-                                    catch (Exception)
-                                    {
-                                        Console.SetCursorPosition(2, 4);
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Роль пользователя: Ошибка. Неправельный ввод.");
-                                        Thread.Sleep(1000);
-                                        Console.ResetColor();
-                                        Console.SetCursorPosition(2, 4);
-                                        Console.Write("Роль пользователя:                                                ");
-                                    }
-                                }
-
-                                Console.SetCursorPosition(21, 4);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(role);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(21, 4);
-                                Console.Write(role);
-                                break;
-                        }
-                        Console.CursorVisible = false;
-                        break;
-
-                    case ConsoleKey.S:
-
-                        if (id == -1 || role == -1 || login == "" || password == "")
-                        {
-                            Console.SetCursorPosition(2, 5);
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("Ошибка. Поля не заполнены.");
-                            Thread.Sleep(1000);
-                            Console.ResetColor();
-                            Console.SetCursorPosition(2, 5);
-                            Console.Write("                                                    ");
-                        }
-                        else
-                        {
-                            users.Add(new User(id, role, login, password));
-                            FileManager.SaveToFile(users, "Users.json");
-
-                            Console.SetCursorPosition(2, 5);
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("Успех. Ползователь создан.");
-                            Console.ResetColor();
-                            Console.ReadLine();
-                            Create();
-                        }
-                        break;
-                    case ConsoleKey.Escape:
-                        Display();
-                        break;
-                }
-            }
+           
         }
 
         public void Read()
         {
-            Console.CursorVisible = true;
-
-            Console.Clear();
-
-            List<User> users = FileManager.ReadUsersFromFile();
-            List<User> FoundUsers = null;
-
-            Console.WriteLine("Меню поиска. ");
-            Console.Write("Поиск: ");
-            string search = Console.ReadLine();
+            
         }
 
         public void Update(int Index)
@@ -465,20 +175,78 @@ namespace ShopManager.Menus
             List<User> users = FileManager.ReadUsersFromFile();
             int SelectedIndex = 0;
 
-            int id = users[Index].ID;
-            string login = users[Index].Login;
-            string password = users[Index].Password;
-            int role = users[Index].Role;
+            string name = users[Index].Name;
+            string surname = users[Index].Surname;
+            string patronymic = users[Index].Patronymic;
+            string dateOfBirth = users[Index].DateOfBirth;
+            string job = users[Index].Patronymic;
+            long passportInfo = users[Index].PassportInfo;
+            int salary = users[Index].Salary;
 
-            Console.WriteLine("Меню изменения пользователя");
-            Console.SetCursorPosition(2, 1);
-            Console.Write($"ID пользователя: {id}");
-            Console.SetCursorPosition(2, 2);
-            Console.Write($"Логин пользователя: {login}");
-            Console.SetCursorPosition(2, 3);
-            Console.Write($"Пароль пользователя: {password}");
-            Console.SetCursorPosition(2, 4);
-            Console.Write($"Роль пользователя: {role}");
+            Console.WriteLine("Меню привязки сотрудника");
+
+            Console.SetCursorPosition(0, 1);
+            if (users[SelectedIndex].Name == null)
+            {
+                Console.WriteLine($"  Имя: не назначено");
+            }
+            else
+            {
+                Console.WriteLine($"  Имя: {users[SelectedIndex].Name}");
+            }
+
+            Console.SetCursorPosition(0, 2);
+            if (users[SelectedIndex].Surname == null)
+            {
+                Console.WriteLine($"  Фамилия: не назначена");
+            }
+            else
+            {
+                Console.WriteLine($"  Фамилия: {users[SelectedIndex].Surname}");
+            }
+
+            Console.SetCursorPosition(0, 3);
+            if (users[SelectedIndex].Patronymic == null)
+            {
+                Console.WriteLine($"  Очество: не назначено");
+            }
+            else
+            {
+                Console.WriteLine($"  Очество: {users[SelectedIndex].Patronymic}");
+            }
+
+            Console.SetCursorPosition(0, 4);
+            if (users[SelectedIndex].DateOfBirth == null)
+            {
+                Console.WriteLine($"  Дата рождения [DD-MM-YYYY]: не назначена");
+            }
+            else
+            {
+                Console.WriteLine($"  Дата рождения [DD-MM-YYYY]: {users[SelectedIndex].DateOfBirth}");
+            }
+
+            Console.SetCursorPosition(0, 5);
+            Console.WriteLine($"  Зарплата: {users[SelectedIndex].Salary}");
+
+            Console.SetCursorPosition(0, 6);
+            if (users[SelectedIndex].PassportInfo == 0)
+            {
+                Console.WriteLine($"  Серия и номер паспорта: не назначена");
+            }
+            else
+            {
+                Console.WriteLine($"  Серия и номер паспорта: {users[SelectedIndex].PassportInfo}");
+            }
+
+            Console.SetCursorPosition(0, 7);
+            if (users[SelectedIndex].Job == null)
+            {
+                Console.WriteLine($"  Должность: не назначена");
+            }
+            else
+            {
+                Console.WriteLine($"  Должность: {users[SelectedIndex].Job}");
+            }
 
             while (true)
             {
@@ -487,9 +255,9 @@ namespace ShopManager.Menus
                 {
                     case ConsoleKey.DownArrow:
                         SelectedIndex++;
-                        if (SelectedIndex > 3)
+                        if (SelectedIndex > 6)
                         {
-                            SelectedIndex = 3;
+                            SelectedIndex = 6;
                         }
                         break;
 
@@ -505,7 +273,7 @@ namespace ShopManager.Menus
                         switch (SelectedIndex)
                         {
                             case 0:
-                                Console.SetCursorPosition(19, 1);
+                                Console.SetCursorPosition(7, 1);
                                 Console.Write("                 ");
 
                                 bool isCorrect = false;
@@ -514,170 +282,43 @@ namespace ShopManager.Menus
                                 {
                                     try
                                     {
-                                        Console.SetCursorPosition(19, 1);
-                                        id = Convert.ToInt32(Console.ReadLine());
+                                        Console.SetCursorPosition(7, 1);
+                                        name = Console.ReadLine();
 
-                                        foreach (User user in users)
+
+                                        if (name == "")
                                         {
-                                            if (user.ID == id && users[Index].ID != id)
-                                            {
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("ID пользователя: Ошибка. Пользователь с таким ID уже существует.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ResetColor();
-                                                Console.Write($"ID пользователя:                                                ");
-                                                Console.SetCursorPosition(19, 1);
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else if (id < 0)
-                                            {
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("ID пользователя: Ошибка. ID не может быть меньше нуля.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 1);
-                                                Console.ResetColor();
-                                                Console.Write("ID пользователя:                                                  ");
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                isCorrect = true;
-                                            }
+                                            name = users[Index].Name;
                                         }
 
+                                        isCorrect = true;
                                     }
                                     catch (Exception)
                                     {
-                                        Console.SetCursorPosition(2, 1);
+                                        Console.SetCursorPosition(0, 1);
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("ID пользователя: Ошибка. Неправельный ввод.");
+                                        Console.Write(" Имя: Ошибка. Неправельный ввод.");
                                         Thread.Sleep(1000);
                                         Console.ResetColor();
-                                        Console.SetCursorPosition(2, 1);
-                                        Console.Write("ID пользователя:                                                ");
+                                        Console.SetCursorPosition(0, 1);
+                                        Console.Write(" Имя:                                                     ");
                                     }
                                 }
 
-                                Console.SetCursorPosition(19, 1);
+                                Console.SetCursorPosition(7, 1);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(id);
+                                Console.Write(name);
                                 Thread.Sleep(1000);
                                 Console.ResetColor();
-                                Console.SetCursorPosition(19, 1);
-                                Console.Write(id);
-
+                                Console.SetCursorPosition(7, 1);
+                                Console.Write(name);
                                 SelectedIndex = 1;
+
                                 break;
 
                             case 1:
-                                Console.SetCursorPosition(22, 2);
+                                Console.SetCursorPosition(11, 2);
                                 Console.Write("                                                       ");
-
-                                isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    Console.SetCursorPosition(22, 2);
-                                    login = Console.ReadLine();
-
-                                    foreach (User user in users)
-                                    {
-                                        if (user.Login == login && users[Index].Login != login)
-                                        {
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.Write("Логин пользователя: Ошибка. Пользователь с таким логином уже существует.");
-                                            Thread.Sleep(1000);
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ResetColor();
-                                            Console.Write("Логин пользователя:                                                                         ");
-                                            Console.SetCursorPosition(22, 2);
-                                            isCorrect = false;
-                                            break;
-                                        }
-                                        else if (login == "")
-                                        {
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.Write("Логин пользователя: Ошибка. Пользователь не может быть с пустым логином.");
-                                            Thread.Sleep(1000);
-                                            Console.SetCursorPosition(2, 2);
-                                            Console.ResetColor();
-                                            Console.Write("Логин пользователя:                                                                         ");
-                                            Console.SetCursorPosition(22, 2);
-                                            isCorrect = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            isCorrect = true;
-                                        }
-                                    }
-                                }
-
-                                Console.SetCursorPosition(22, 2);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(login);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(22, 2);
-                                Console.Write(login);
-
-                                SelectedIndex = 2;
-                                break;
-
-
-                            case 2:
-                                Console.SetCursorPosition(23, 3);
-                                Console.Write("                                                       ");
-
-                                isCorrect = false;
-
-                                while (!isCorrect)
-                                {
-                                    Console.SetCursorPosition(23, 3);
-                                    password = Console.ReadLine();
-
-
-                                    if (password == "")
-                                    {
-                                        Console.SetCursorPosition(2, 3);
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Пароль пользователя: Ошибка. Пользователь не может быть с пустым паролем.");
-                                        Thread.Sleep(1000);
-                                        Console.SetCursorPosition(2, 3);
-                                        Console.ResetColor();
-                                        Console.Write("Пароль пользователя:                                                                         ");
-                                        Console.SetCursorPosition(23, 3);
-                                        isCorrect = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        isCorrect = true;
-                                    }
-                                }
-
-                                Console.SetCursorPosition(23, 3);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(password);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(23, 3);
-                                Console.Write(password);
-
-                                SelectedIndex = 3;
-                                break;
-
-                            case 3:
-
-                                Console.SetCursorPosition(21, 4);
-                                Console.Write("                 ");
 
                                 isCorrect = false;
 
@@ -685,49 +326,270 @@ namespace ShopManager.Menus
                                 {
                                     try
                                     {
-                                        Console.SetCursorPosition(21, 4);
-                                        role = Convert.ToInt32(Console.ReadLine());
+                                        Console.SetCursorPosition(11, 2);
+                                        surname = Console.ReadLine();
 
-                                        foreach (User user in users)
+
+                                        if (surname == "")
                                         {
-                                            if (role < 0 || role > 5)
-                                            {
-                                                Console.SetCursorPosition(2, 4);
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("Роль пользователя: Ошибка. Такой роли не существует.");
-                                                Thread.Sleep(1000);
-                                                Console.SetCursorPosition(2, 4);
-                                                Console.ResetColor();
-                                                Console.Write("Роль пользователя:                                                ");
-                                                isCorrect = false;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                isCorrect = true;
-                                            }
+                                            surname = users[Index].Surname;
+                                        }
+
+                                        isCorrect = true;
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.SetCursorPosition(0, 2);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("  Фамилия: Ошибка. Неправельный ввод.");
+                                        Thread.Sleep(1000);
+                                        Console.ResetColor();
+                                        Console.SetCursorPosition(0, 2);
+                                        Console.Write("  Фамилия:                                                     ");
+                                    }
+                                }
+
+                                Console.SetCursorPosition(11, 2);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(surname);
+                                Thread.Sleep(1000);
+                                Console.ResetColor();
+                                Console.SetCursorPosition(11, 2);
+                                Console.Write(surname);
+
+                                SelectedIndex = 2;
+                                break;
+
+                            case 2:
+                                Console.SetCursorPosition(12, 3);
+                                Console.Write("                                                       ");
+
+                                isCorrect = false;
+
+                                while (!isCorrect)
+                                {
+                                    try
+                                    {
+                                        Console.SetCursorPosition(12, 3);
+                                        patronymic = Console.ReadLine();
+
+
+                                        if (patronymic == "")
+                                        {
+                                            patronymic = users[Index].Patronymic;
+                                        }
+
+                                        isCorrect = true;
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.SetCursorPosition(0, 3);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("  Отчество: Ошибка. Неправельный ввод.");
+                                        Thread.Sleep(1000);
+                                        Console.ResetColor();
+                                        Console.SetCursorPosition(0, 3);
+                                        Console.Write("  Отчество:                                                     ");
+                                    }
+                                }
+
+                                Console.SetCursorPosition(12, 3);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(patronymic);
+                                Thread.Sleep(1000);
+                                Console.ResetColor();
+                                Console.SetCursorPosition(12, 3);
+                                Console.Write(patronymic);
+
+                                SelectedIndex = 3;
+                                break;
+
+                            case 3:
+                                Console.SetCursorPosition(30, 4);
+                                Console.Write("                                                       ");
+
+                                isCorrect = false;
+
+                                while (!isCorrect)
+                                {
+                                    try
+                                    {
+                                        Console.SetCursorPosition(30, 4);
+                                        dateOfBirth = Console.ReadLine();
+
+                                        if(dateOfBirth == "")
+                                        {
+                                            dateOfBirth = users[Index].DateOfBirth;
+                                            break;
+                                        }
+
+                                        DateTime dateTimeObj;
+                                        isCorrect = DateTime.TryParse(dateOfBirth, out dateTimeObj);
+
+                                        if (isCorrect == false)
+                                        {
+                                            Console.SetCursorPosition(0, 4);
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("  Дата рождения [DD-MM-YYYY]:  Ошибка. Неправельный ввод.");
+                                            Thread.Sleep(1000);
+                                            Console.ResetColor();
+                                            Console.SetCursorPosition(0, 4);
+                                            Console.Write("  Дата рождения [DD-MM-YYYY]:                                                       ");
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.SetCursorPosition(0, 4);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("  Дата рождения [DD-MM-YYYY]:  Ошибка. Неправельный ввод.");
+                                        Thread.Sleep(1000);
+                                        Console.ResetColor();
+                                        Console.SetCursorPosition(0, 4);
+                                        Console.Write("  Дата рождения [DD-MM-YYYY]:                                                       ");
+                                    }
+                                }
+
+                                Console.SetCursorPosition(30, 4);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(dateOfBirth);
+                                Thread.Sleep(1000);
+                                Console.ResetColor();
+                                Console.SetCursorPosition(30, 4);
+                                Console.Write(dateOfBirth);
+
+                                SelectedIndex = 4;
+                                break;
+
+                            case 4:
+                                Console.SetCursorPosition(12, 5);
+                                Console.Write("                                                       ");
+
+                                isCorrect = false;
+
+                                while (!isCorrect)
+                                {
+                                    try
+                                    {
+                                        Console.SetCursorPosition(12, 5);
+                                        salary = Convert.ToInt32(Console.ReadLine());
+                                        isCorrect = true;
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.SetCursorPosition(0, 5);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("  Зарплата: Ошибка. Неправельный ввод.");
+                                        Thread.Sleep(1000);
+                                        Console.ResetColor();
+                                        Console.SetCursorPosition(0, 5);
+                                        Console.Write("  Зарплата:                                                     ");
+                                    }
+                                }
+
+                                Console.SetCursorPosition(12, 5);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(salary);
+                                Thread.Sleep(1000);
+                                Console.ResetColor();
+                                Console.SetCursorPosition(12, 5);
+                                Console.Write(salary);
+
+                                SelectedIndex = 5;
+                                break;
+
+                            case 5:
+                                Console.SetCursorPosition(26, 6);
+                                Console.Write("************                                                       ");
+
+                                isCorrect = false;
+
+                                while (!isCorrect)
+                                {
+                                    try
+                                    {
+                                        Console.SetCursorPosition(26, 6);
+                                        passportInfo = Convert.ToInt64(Console.ReadLine());
+                                        isCorrect = true;
+
+                                        if (Convert.ToString(passportInfo).Length != 12)
+                                        {
+                                            Console.SetCursorPosition(0, 6);
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("  Серия и номер паспорта: Ошибка. Вы должны напечатать 12 цифр.");
+                                            Thread.Sleep(1000);
+                                            Console.ResetColor();
+                                            Console.SetCursorPosition(0, 6);
+                                            Console.Write("  Серия и номер паспорта: ************                                            ");
+                                            isCorrect = false;
                                         }
 
                                     }
                                     catch (Exception)
                                     {
-                                        Console.SetCursorPosition(2, 4);
+                                        Console.SetCursorPosition(0, 6);
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Роль пользователя: Ошибка. Неправельный ввод.");
+                                        Console.Write("  Серия и номер паспорта: Ошибка. Неправельный ввод.");
                                         Thread.Sleep(1000);
                                         Console.ResetColor();
-                                        Console.SetCursorPosition(2, 4);
-                                        Console.Write("Роль пользователя:                                                ");
+                                        Console.SetCursorPosition(0, 6);
+                                        Console.Write("  Серия и номер паспорта: ************                                                    ");
                                     }
                                 }
 
-                                Console.SetCursorPosition(21, 4);
+                                Console.SetCursorPosition(26, 6);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(role);
+                                Console.Write(passportInfo);
                                 Thread.Sleep(1000);
                                 Console.ResetColor();
-                                Console.SetCursorPosition(21, 4);
-                                Console.Write(role);
+                                Console.SetCursorPosition(26, 6);
+                                Console.Write(passportInfo);
+
+                                SelectedIndex = 6;
+                                break;
+
+                            case 6:
+                                Console.SetCursorPosition(13, 7);
+                                Console.Write("                                                       ");
+
+                                isCorrect = false;
+
+                                while (!isCorrect)
+                                {
+                                    try
+                                    {
+                                        Console.SetCursorPosition(13, 7);
+                                        job = Console.ReadLine();
+
+
+                                        if (job == "")
+                                        {
+                                            job = users[Index].Job;
+                                        }
+
+                                        isCorrect = true;
+
+                                    }
+                                    catch (Exception)
+                                    {
+                                        Console.SetCursorPosition(0, 7);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write("  Должность: Ошибка. Неправельный ввод.");
+                                        Thread.Sleep(1000);
+                                        Console.ResetColor();
+                                        Console.SetCursorPosition(0, 7);
+                                        Console.Write("  Должность:                                                     ");
+                                    }
+                                }
+
+                                Console.SetCursorPosition(13, 7);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(job);
+                                Thread.Sleep(1000);
+                                Console.ResetColor();
+                                Console.SetCursorPosition(13, 7);
+                                Console.Write(job);
+
+                                SelectedIndex = 6;
                                 break;
                         }
                         Console.CursorVisible = false;
@@ -735,15 +597,15 @@ namespace ShopManager.Menus
 
                     case ConsoleKey.S:
 
-                        users[Index] = new User(id, role, login, password);
+                        users[Index] = new User((int)users[Index].ID, users[Index].Role, users[Index].Login, users[Index].Password, name , surname, patronymic, dateOfBirth, job, passportInfo, salary);
                         FileManager.SaveToFile(users, "Users.json");
 
-                        Console.SetCursorPosition(2, 5);
+                        Console.SetCursorPosition(2, 8);
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("Успех. Ползователь изменен.");
+                        Console.Write("Успех. Сотрудник изменен.");
                         Console.ResetColor();
                         Console.ReadLine();
-                        Create();
+                        Update(Index);
                         break;
 
                     case ConsoleKey.Escape:
@@ -752,12 +614,13 @@ namespace ShopManager.Menus
                 }
             }
         }
-
+        
         public void Delete(int Index)
         {
             List<User> users = FileManager.ReadUsersFromFile();
-            users.RemoveAt(Index);
+            users[Index] = new User((int)users[Index].ID, users[Index].Role, users[Index].Login, users[Index].Password, null, null, null, null, null, 0, 0);
             FileManager.SaveToFile(users, "Users.json");
+            Display();
         }
     }
 }

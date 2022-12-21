@@ -12,6 +12,7 @@ namespace ShopManager
 
             //new AdminMenu(list[1].Login).Display();
 
+
             new HRMenu(list[0].Login).Display();
         }
     }
