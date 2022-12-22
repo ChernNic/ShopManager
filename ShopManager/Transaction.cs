@@ -14,7 +14,7 @@ namespace ShopManager
         public DateTime Date;
         public bool Increase;
 
-        public Transaction(int id, string name, int amount_of_money, DateTime date, bool increase)
+        public Transaction(int id, string name, int amount_of_money, DateTime date, bool increase = true)
         {
             ID = id;
             Name = name;

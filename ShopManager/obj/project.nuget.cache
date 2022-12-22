@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "HDENRF/Ho6uBQ0WZ8fTpUSMIHcFdJa42B7+WjQzLz6caU4fUc1dWqWIUFZhnOvS9fM4FlEVDdoA0pODB5CyMFw==",
+  "dgSpecHash": "e2LR2QZeuDVjI/6/KFluKjotIzodI3Tsi/3+Cov3DwzR42jKiJkaAVAsc0jktHTPz2xU60ADL8meNdNv6AmpFQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\chern\\Desktop\\ShopManager\\ShopManager\\ShopManager.csproj",
+  "projectFilePath": "C:\\Users\\Николай\\OneDrive\\Рабочий стол\\C# Projects\\ShopManager\\ShopManager\\ShopManager.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\chern\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\chern\\.nuget\\packages\\newtonsoft.json.bson\\1.0.3-beta1\\newtonsoft.json.bson.1.0.3-beta1.nupkg.sha512"
+    "C:\\Users\\Николай\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Николай\\.nuget\\packages\\newtonsoft.json.bson\\1.0.3-beta1\\newtonsoft.json.bson.1.0.3-beta1.nupkg.sha512"
   ],
   "logs": []
 }

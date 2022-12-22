@@ -10,8 +10,13 @@ namespace ShopManager
         {
             List<User> list = FileManager.ReadUsersFromFile();
 
-            //new AdminMenu(list[1].Login).Display();
+            new CashierMenu(list[0].Login).Display();
 
+            new WirehauseMenu(list[0].Login).Display();
+
+
+
+            new ManagerMenu(list[0].Login).Display();
 
             new HRMenu(list[0].Login).Display();
         }

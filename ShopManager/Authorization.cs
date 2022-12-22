@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopManager.Menus;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,10 +24,19 @@ namespace ShopManager
                     switch (user.Role)
                     {
                         case 0:
-                            Console.WriteLine(12);
+                            new AdminMenu(login).Display();
                             break;
                         case 1:
-                            Console.WriteLine(0);
+                            new HRMenu(login).Display();
+                            break;
+                        case 2:
+                            new ManagerMenu(login).Display();
+                            break;
+                        case 3:
+                            new WirehauseMenu(login).Display();
+                            break;
+                        case 4:
+                            new CashierMenu(login).Display();
                             break;
                     }
                     isAuthorized = true;

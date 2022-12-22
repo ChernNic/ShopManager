@@ -25,7 +25,7 @@ namespace ShopManager.Menus
 
             Console.CursorVisible = false;
 
-            string label;
+            string label = Login;
             foreach (User user in users)
             {
                 if (user.Login == Login)
@@ -33,10 +33,7 @@ namespace ShopManager.Menus
                     if (user.Name != null)
                     {
                         label = user.Name;
-                    }
-                    else
-                    {
-                        label = Login;
+                        break;
                     }
                 }
             }
@@ -44,7 +41,7 @@ namespace ShopManager.Menus
             Console.SetCursorPosition(0, 0);
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Меню Менеджера персонала: {Login}                                                                                                              ");
+            Console.WriteLine($"Меню Менеджера персонала: {label}                                                                                                              ");
             Console.ResetColor();
 
             Console.SetCursorPosition(89, 1);
@@ -150,7 +147,7 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.Escape:
-
+                        MainMenu.Run();
                         break;
                 }
             }
@@ -175,7 +172,7 @@ namespace ShopManager.Menus
             List<User> users = FileManager.ReadUsersFromFile();
             int SelectedIndex = 0;
 
-            string name = users[Index].Name;
+            string name = users[2].Name;
             string surname = users[Index].Surname;
             string patronymic = users[Index].Patronymic;
             string dateOfBirth = users[Index].DateOfBirth;
@@ -186,23 +183,23 @@ namespace ShopManager.Menus
             Console.WriteLine("Меню привязки сотрудника");
 
             Console.SetCursorPosition(0, 1);
-            if (users[SelectedIndex].Name == null)
+            if (users[Index].Name == null)
             {
                 Console.WriteLine($"  Имя: не назначено");
             }
             else
             {
-                Console.WriteLine($"  Имя: {users[SelectedIndex].Name}");
+                Console.WriteLine($"  Имя: {users[Index].Name}");
             }
 
             Console.SetCursorPosition(0, 2);
-            if (users[SelectedIndex].Surname == null)
+            if (users[Index].Surname == null)
             {
                 Console.WriteLine($"  Фамилия: не назначена");
             }
             else
             {
-                Console.WriteLine($"  Фамилия: {users[SelectedIndex].Surname}");
+                Console.WriteLine($"  Фамилия: {users[Index].Surname}");
             }
 
             Console.SetCursorPosition(0, 3);
@@ -212,40 +209,40 @@ namespace ShopManager.Menus
             }
             else
             {
-                Console.WriteLine($"  Очество: {users[SelectedIndex].Patronymic}");
+                Console.WriteLine($"  Очество: {users[Index].Patronymic}");
             }
 
             Console.SetCursorPosition(0, 4);
-            if (users[SelectedIndex].DateOfBirth == null)
+            if (users[Index].DateOfBirth == null)
             {
                 Console.WriteLine($"  Дата рождения [DD-MM-YYYY]: не назначена");
             }
             else
             {
-                Console.WriteLine($"  Дата рождения [DD-MM-YYYY]: {users[SelectedIndex].DateOfBirth}");
+                Console.WriteLine($"  Дата рождения [DD-MM-YYYY]: {users[Index].DateOfBirth}");
             }
 
             Console.SetCursorPosition(0, 5);
-            Console.WriteLine($"  Зарплата: {users[SelectedIndex].Salary}");
+            Console.WriteLine($"  Зарплата: {users[Index].Salary}");
 
             Console.SetCursorPosition(0, 6);
-            if (users[SelectedIndex].PassportInfo == 0)
+            if (users[Index].PassportInfo == 0)
             {
                 Console.WriteLine($"  Серия и номер паспорта: не назначена");
             }
             else
             {
-                Console.WriteLine($"  Серия и номер паспорта: {users[SelectedIndex].PassportInfo}");
+                Console.WriteLine($"  Серия и номер паспорта: {users[Index].PassportInfo}");
             }
 
             Console.SetCursorPosition(0, 7);
-            if (users[SelectedIndex].Job == null)
+            if (users[Index].Job == null)
             {
                 Console.WriteLine($"  Должность: не назначена");
             }
             else
             {
-                Console.WriteLine($"  Должность: {users[SelectedIndex].Job}");
+                Console.WriteLine($"  Должность: {users[Index].Job}");
             }
 
             while (true)
@@ -317,7 +314,7 @@ namespace ShopManager.Menus
                                 break;
 
                             case 1:
-                                Console.SetCursorPosition(11, 2);
+                                Console.SetCursorPosition(10, 2);
                                 Console.Write("                                                       ");
 
                                 isCorrect = false;
@@ -370,7 +367,7 @@ namespace ShopManager.Menus
                                 {
                                     try
                                     {
-                                        Console.SetCursorPosition(12, 3);
+                                        Console.SetCursorPosition(11, 3);
                                         patronymic = Console.ReadLine();
 
 

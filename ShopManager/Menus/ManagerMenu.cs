@@ -5,11 +5,11 @@ using System.Threading;
 
 namespace ShopManager.Menus
 {
-    class WirehauseMenu
+    internal class ManagerMenu
     {
         string Login;
 
-        public WirehauseMenu(string login)
+        public ManagerMenu(string login)
         {
             Login = login;
         }
@@ -20,22 +20,22 @@ namespace ShopManager.Menus
         {
             Console.Clear();
 
-            List<Product> products = FileManager.ReadFromFile<Product>("Products.json");
+            List<Transaction> transactions = FileManager.ReadFromFile<Transaction>("Transactions.json");
             List<User> users = FileManager.ReadUsersFromFile();
 
-            if(products == null)
+            if (transactions == null)
             {
                 Console.WriteLine("Нет товаров. Нажмите любую клавишу чтобы их добавть.");
                 Console.ReadKey();
                 Create();
             }
-            products = FileManager.ReadFromFile<Product>("Products.json");
+            transactions = FileManager.ReadFromFile<Transaction>("Transactions.json");
 
-            string[] options = new string[products.Count];
+            string[] options = new string[transactions.Count];
 
             Console.CursorVisible = false;
 
-            string label = Login; 
+            string label = Login;
 
             foreach (User user in users)
             {
@@ -50,32 +50,47 @@ namespace ShopManager.Menus
             }
 
             Console.SetCursorPosition(0, 0);
-            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Меню Менеджера Склада: {label}                                                                                                              ");
+            Console.WriteLine($"Меню Менеджера: {label}                                                                                                              ");
             Console.ResetColor();
 
             Console.SetCursorPosition(89, 1);
-            Console.WriteLine("| F1 - Создание Товара        |");
+            Console.WriteLine("| F1 - Создание Транзакции    |");
             Console.SetCursorPosition(89, 2);
-            Console.WriteLine("| F2 - Изменение Товара       |");
+            Console.WriteLine("| F2 - Изменение Транзакции   |");
             Console.SetCursorPosition(89, 3);
-            Console.WriteLine("| Del - Удаление Товара       |");
+            Console.WriteLine("| Del - Удаление Транзакции   |");
             Console.SetCursorPosition(89, 4);
             Console.WriteLine("| Esc - Возварт к авторизации |");
 
             Console.SetCursorPosition(0, 1);
-            Console.WriteLine("ID Наименование         Кол-во");
+            Console.WriteLine("ID Наименование         Сумма             Время записи               Прибавка");
 
             for (int i = 0; i < options.Length; i++)
             {
-                options[i] = products[i].ID + " " + products[i].Name;
+                options[i] = transactions[i].ID + "  " + transactions[i].Name;
 
                 Console.SetCursorPosition(0, i + 2);
-                Console.WriteLine(products[i].ID + " " + products[i].Name);
+                Console.WriteLine(transactions[i].ID + "  " + transactions[i].Name);
                 Console.SetCursorPosition(24, i + 2);
-                Console.WriteLine(products[i].Amount);
-                Console.ResetColor();
+                Console.WriteLine(transactions[i].Amount_Of_Money);
+                Console.SetCursorPosition(40, i + 2);
+                Console.WriteLine(transactions[i].Date);
+                if (transactions[i].Increase)
+                {
+                    Console.SetCursorPosition(69, i + 2);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("+");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.SetCursorPosition(69, i + 2);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("-");
+                    Console.ResetColor();
+                }
             }
 
             while (true)
@@ -86,9 +101,9 @@ namespace ShopManager.Menus
 
                     case ConsoleKey.DownArrow:
                         SelectedIndex++;
-                        if (SelectedIndex > products.Count - 1)
+                        if (SelectedIndex > transactions.Count - 1)
                         {
-                            SelectedIndex = products.Count - 1;
+                            SelectedIndex = transactions.Count - 1;
                         }
                         break;
 
@@ -97,18 +112,6 @@ namespace ShopManager.Menus
                         {
                             SelectedIndex--;
                         }
-                        break;
-
-                    case ConsoleKey.Enter:
-                        Console.SetCursorPosition(0, SelectedIndex + 3);
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-
-                        Console.WriteLine($"  Цена за штуку: {products[SelectedIndex].Cost}                      ");
-
-                        Console.ReadKey(true);
-                        Console.Clear();
-                        Console.ResetColor();
-                        Display();
                         break;
 
                     case ConsoleKey.F1:
@@ -120,7 +123,7 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.Delete:
-                        if (products[SelectedIndex].ID != 0)
+                        if (transactions[SelectedIndex].ID != 0)
                         {
                             Delete(SelectedIndex);
                             Display();
@@ -144,23 +147,27 @@ namespace ShopManager.Menus
 
             Console.CursorVisible = false;
 
-            List<Product> products = FileManager.ReadFromFile<Product>("Products.json");
+            List<Transaction> transactions = FileManager.ReadFromFile<Transaction>("Transactions.json");
             int SelectedIndex = 0;
 
-            int id = 0;
-            string Name = "";
-            int coast = -1;
-            int amount = -1;
+            int id = -1;
+            string name = "";
+            int amount_of_money = -1;
+            DateTime date = DateTime.Now;
+            bool increase = false;
 
-            Console.WriteLine("Меню добовления нового товара.");
+            Console.WriteLine("Меню добовления новой транзакции");
+
             Console.SetCursorPosition(2, 1);
-            Console.Write("ID товара: ");
+            Console.Write("ID транзакции: ");
             Console.SetCursorPosition(2, 2);
-            Console.Write("Наименование товара: ");
+            Console.Write("Наименование: ");
             Console.SetCursorPosition(2, 3);
-            Console.Write("Стоимость: ");
+            Console.Write("Сумма: ");
             Console.SetCursorPosition(2, 4);
-            Console.Write("Кол-во: ");
+            Console.Write("Прибавка: ");
+            //Console.SetCursorPosition(2, 5);
+            //Console.Write("Время[DD.MM.YYYY HH:mm]: ");
 
             while (true)
             {
@@ -169,9 +176,9 @@ namespace ShopManager.Menus
                 {
                     case ConsoleKey.DownArrow:
                         SelectedIndex++;
-                        if (SelectedIndex > 3)
+                        if (SelectedIndex > 4)
                         {
-                            SelectedIndex = 3;
+                            SelectedIndex = 4;
                         }
                         break;
 
@@ -187,31 +194,33 @@ namespace ShopManager.Menus
                         switch (SelectedIndex)
                         {
                             case 0:
-                                Console.SetCursorPosition(12, 1);
+                                Console.SetCursorPosition(17, 1);
                                 Console.Write("                 ");
 
                                 bool isCorrect = false;
 
                                 while (!isCorrect)
                                 {
+
                                     try
                                     {
-                                        Console.SetCursorPosition(13, 1);
+                                        Console.SetCursorPosition(17, 1);
                                         id = Convert.ToInt32(Console.ReadLine());
 
-                                        if (products != null)
+                                        if (transactions != null)
                                         {
-                                            foreach (Product product in products)
+                                            foreach (Transaction transaction in transactions)
                                             {
-                                                if (product.ID == id)
+                                                if (transaction.ID == id)
                                                 {
                                                     Console.SetCursorPosition(2, 1);
                                                     Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.Write("ID товара: Ошибка. Товар с таким ID уже существует.");
+                                                    Console.Write("ID транзакции: Транзакция с таким ID уже существует.");
                                                     Thread.Sleep(1000);
                                                     Console.SetCursorPosition(2, 1);
                                                     Console.ResetColor();
-                                                    Console.Write("ID товара:                                                ");
+                                                    Console.Write("ID транзакции:                                            ");
+                                                    Console.SetCursorPosition(17, 1);
                                                     isCorrect = false;
                                                     break;
                                                 }
@@ -219,11 +228,11 @@ namespace ShopManager.Menus
                                                 {
                                                     Console.SetCursorPosition(2, 1);
                                                     Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.Write("ID товара: Ошибка. ID не может быть меньше нуля.");
+                                                    Console.Write("ID транзакции: ID не может быть меньше нуля.");
                                                     Thread.Sleep(1000);
                                                     Console.SetCursorPosition(2, 1);
                                                     Console.ResetColor();
-                                                    Console.Write("ID товара:                                                ");
+                                                    Console.Write("ID транзакции:                                    ");
                                                     isCorrect = false;
                                                     break;
                                                 }
@@ -242,62 +251,62 @@ namespace ShopManager.Menus
                                     {
                                         Console.SetCursorPosition(2, 1);
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("ID товара: Ошибка. Неправельный ввод.");
+                                        Console.Write("ID транзакции: Неправильный ввод.");
                                         Thread.Sleep(1000);
                                         Console.ResetColor();
                                         Console.SetCursorPosition(2, 1);
-                                        Console.Write("ID товара:                                                ");
+                                        Console.Write("ID транзакции:                                                     ");
                                     }
                                 }
 
-                                Console.SetCursorPosition(13, 1);
+                                Console.SetCursorPosition(17, 1);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.Write(id);
                                 Thread.Sleep(1000);
                                 Console.ResetColor();
-                                Console.SetCursorPosition(13, 1);
+                                Console.SetCursorPosition(17, 1);
                                 Console.Write(id);
 
                                 SelectedIndex = 1;
                                 break;
 
                             case 1:
-                                Console.SetCursorPosition(22, 2);
+                                Console.SetCursorPosition(17, 2);
                                 Console.Write("                                                       ");
 
                                 isCorrect = false;
 
                                 while (!isCorrect)
                                 {
-                                    Console.SetCursorPosition(23, 2);
-                                    Name = Console.ReadLine();
-
-                                    if (products != null)
+                                    Console.SetCursorPosition(17, 2);
+                                    name = Console.ReadLine();
+                                    if (transactions != null)
                                     {
-                                        foreach (Product product in products)
+                                        foreach (Transaction transaction in transactions)
                                         {
-                                            if (product.Name == Name)
+                                            if (transaction.Name == name)
                                             {
                                                 Console.SetCursorPosition(2, 2);
                                                 Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("Наименование товара: Ошибка. Товар с таким наименованием уже существует.");
+                                                Console.Write("Наименование: Транзакция с таким наименованием уже существует.");
                                                 Thread.Sleep(1000);
                                                 Console.SetCursorPosition(2, 2);
                                                 Console.ResetColor();
-                                                Console.Write("Наименование товара:                                                                         ");
-                                                Console.SetCursorPosition(23, 2);
+                                                Console.Write("Наименование:                                                    ");
+                                                Console.SetCursorPosition(17, 2);
                                                 isCorrect = false;
                                                 break;
                                             }
-                                            else if (Name == "")
+                                            else if (name == "")
                                             {
                                                 Console.SetCursorPosition(2, 2);
                                                 Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.Write("Наименование товара: Ошибка. Товар не может быть с пустым наименованием.");
+                                                Console.Write("Наименование: Транзакция не может быть с пустым наименованием.");
                                                 Thread.Sleep(1000);
                                                 Console.SetCursorPosition(2, 2);
                                                 Console.ResetColor();
-                                                Console.Write("Наименование товара:                                                                         ");
+                                                Console.Write("Наименование:                                                   ");
+                                                Console.SetCursorPosition(17, 2);
                                                 isCorrect = false;
                                                 break;
                                             }
@@ -313,21 +322,21 @@ namespace ShopManager.Menus
                                     }
                                 }
 
-                                Console.SetCursorPosition(23, 2);
+                                Console.SetCursorPosition(17, 2);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(Name);
+                                Console.Write(name);
                                 Thread.Sleep(1000);
                                 Console.ResetColor();
-                                Console.SetCursorPosition(23, 2);
-                                Console.Write(Name);
+                                Console.SetCursorPosition(17, 2);
+                                Console.Write(name);
 
                                 SelectedIndex = 2;
                                 break;
 
 
                             case 2:
-                                Console.SetCursorPosition(13, 3);
-                                Console.Write("                 ");
+                                Console.SetCursorPosition(17, 3);
+                                Console.Write("                                                       ");
 
                                 isCorrect = false;
 
@@ -335,98 +344,166 @@ namespace ShopManager.Menus
                                 {
                                     try
                                     {
-                                        Console.SetCursorPosition(13, 3);
-                                        coast = Convert.ToInt32(Console.ReadLine());
-                                        isCorrect = true;
+
+                                        Console.SetCursorPosition(17, 3);
+                                        amount_of_money = Convert.ToInt32(Console.ReadLine());
+
+                                        if (amount_of_money == 0)
+                                        {
+                                            Console.SetCursorPosition(2, 3);
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("Cумма: Сумма не может быть равна нулю");
+                                            Thread.Sleep(1000);
+                                            Console.SetCursorPosition(2, 3);
+                                            Console.ResetColor();
+                                            Console.Write("Сумма:                                 ");
+                                            Console.SetCursorPosition(17, 3);
+                                            isCorrect = false;
+                                            break;
+                                        }
+
+                                        else
+                                        {
+                                            isCorrect = true;
+                                        }
                                     }
+
                                     catch (Exception)
                                     {
                                         Console.SetCursorPosition(2, 3);
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Стоимость: Ошибка. Неправельный ввод.");
+                                        Console.Write("Сумма: Неправильный ввод.");
                                         Thread.Sleep(1000);
                                         Console.ResetColor();
                                         Console.SetCursorPosition(2, 3);
-                                        Console.Write("Стоимость:                                                ");
+                                        Console.Write("Сумма:                                      ");
                                     }
+
                                 }
 
-                                Console.SetCursorPosition(13, 3);
+                                Console.SetCursorPosition(17, 3);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(coast);
+                                Console.Write(amount_of_money);
                                 Thread.Sleep(1000);
                                 Console.ResetColor();
-                                Console.SetCursorPosition(13, 3);
-                                Console.Write(coast);
+                                Console.SetCursorPosition(17, 3);
+                                Console.Write(amount_of_money);
 
                                 SelectedIndex = 3;
                                 break;
 
                             case 3:
-                                Console.SetCursorPosition(10, 4);
-                                Console.Write("                 ");
+                                Console.SetCursorPosition(17, 4);
+                                Console.Write("");
 
                                 isCorrect = false;
 
                                 while (!isCorrect)
                                 {
-                                    try
+                                    switch (Console.ReadKey(true).Key)
                                     {
-                                        Console.SetCursorPosition(10, 4);
-                                        amount = Convert.ToInt32(Console.ReadLine());
-                                        isCorrect = true;
+                                        case ConsoleKey.OemMinus:
+                                            Console.SetCursorPosition(17, 4);
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("-");
+                                            Thread.Sleep(1000);
+                                            Console.ResetColor();
+                                            Console.SetCursorPosition(17, 4);
+                                            Console.Write("-");
+
+                                            increase = false;
+                                            isCorrect = true;
+                                            break;
+
+                                        case ConsoleKey.OemPlus:
+                                            Console.SetCursorPosition(17, 4);
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("+");
+                                            Thread.Sleep(1000);
+                                            Console.ResetColor();
+                                            Console.SetCursorPosition(17, 4);
+                                            Console.Write("+");
+
+                                            increase = true;
+                                            isCorrect = true;
+                                            break;
                                     }
-                                    catch (Exception)
+                                    if (!isCorrect)
                                     {
                                         Console.SetCursorPosition(2, 4);
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write("Кол-во: Ошибка. Неправельный ввод.");
+                                        Console.Write("Прибавка: Ошибка. Неверные данные");
                                         Thread.Sleep(1000);
                                         Console.ResetColor();
                                         Console.SetCursorPosition(2, 4);
-                                        Console.Write("Кол-во:                                                ");
+                                        Console.Write("Прибавка:                                           ");
                                     }
+                                    isCorrect = true;
                                 }
-
-                                Console.SetCursorPosition(10, 4);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(amount);
-                                Thread.Sleep(1000);
-                                Console.ResetColor();
-                                Console.SetCursorPosition(10, 4);
-                                Console.Write(amount);
-
                                 SelectedIndex = 3;
                                 break;
+
+                            ////case 4:
+                            ////    Console.SetCursorPosition(17, 5);
+                            ////    Console.Write("                                                       ");
+
+                            ////    isCorrect = false;
+
+                            ////    while (!isCorrect)
+                            ////    {
+                            ////        Console.SetCursorPosition(17, 5);
+
+                            ////        while (!DateTime.TryParse(Console.ReadLine(), out date))
+                            ////        {
+                            ////            Console.SetCursorPosition(2, 5);
+                            ////            Console.ForegroundColor = ConsoleColor.Red;
+                            ////            Console.Write("Время[DD.MM.YYYY HH:mm]:  Ошибка. ");
+                            ////            Thread.Sleep(1000);
+                            ////            Console.SetCursorPosition(2, 5);
+                            ////            Console.ResetColor();
+                            ////            Console.Write("Время[DD.MM.YYYY HH:mm]:                                                     ");
+                            ////        }
+
+                            ////    }
+
+                            ////    Console.SetCursorPosition(17, 5);
+                            ////    Console.ForegroundColor = ConsoleColor.Green;
+                            ////    Console.Write(date);
+                            ////    Thread.Sleep(1000);
+                            ////    Console.ResetColor();
+                            ////    Console.SetCursorPosition(17, 5);
+                            ////    Console.Write(date);
+
+                            ////    SelectedIndex = 4;
+                            ////    break;
                         }
-                        Console.CursorVisible = false;
                         break;
 
                     case ConsoleKey.S:
 
-                        if (id == -1 || coast == -1 || Name == "" || amount == -1)
+                        if (id == -1 || name == "" || amount_of_money == -1)
                         {
-                            Console.SetCursorPosition(2, 5);
+                            Console.SetCursorPosition(2, 6);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("Ошибка. Поля не заполнены.");
                             Thread.Sleep(1000);
                             Console.ResetColor();
-                            Console.SetCursorPosition(2, 5);
+                            Console.SetCursorPosition(2, 6);
                             Console.Write("                                                    ");
                         }
                         else
                         {
-                            if(products == null)
+                            if (transactions == null)
                             {
-                                products = new List<Product>();
+                                transactions = new List<Transaction>();
                             }
 
-                            products.Add(new Product(id, Name, coast, amount));
-                            FileManager.SaveToFile(products, "Products.json");
+                            transactions.Add(new Transaction(id, name, amount_of_money, date ,increase));
+                            FileManager.SaveToFile(transactions, "Transactions.json");
 
-                            Console.SetCursorPosition(2, 5);
+                            Console.SetCursorPosition(2, 6);
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("Успех. Товар создан.");
+                            Console.Write("Успех. Транзация успешно создана.");
                             Console.ResetColor();
                             Console.ReadLine();
                             Create();
@@ -504,7 +581,7 @@ namespace ShopManager.Menus
                                     {
                                         Console.SetCursorPosition(13, 1);
                                         id = Convert.ToInt32(Console.ReadLine());
-                                        
+
 
                                         if (products != null)
                                         {
@@ -724,10 +801,9 @@ namespace ShopManager.Menus
 
         public void Delete(int Index)
         {
-            List<Product> products = FileManager.ReadFromFile<Product>("Products.json");
-            products.RemoveAt(Index);
-            FileManager.SaveToFile(products, "Products.json");
+            List<Transaction> transactions = FileManager.ReadFromFile<Transaction>("Transactions.json");
+            transactions.RemoveAt(Index);
+            FileManager.SaveToFile(transactions, "Transactions.json");
         }
     }
 }
-

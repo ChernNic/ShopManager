@@ -25,18 +25,15 @@ namespace ShopManager.Menus
 
             Console.CursorVisible = false;
 
-            string label;
+            string label = Login;
             foreach (User user in users)
             {
                 if (user.Login == Login)
                 {
-                    if(user.Name != null)
+                    if (user.Name != null)
                     {
                         label = user.Name;
-                    }
-                    else
-                    {
-                        label = Login;
+                        break;
                     }
                 }
             }
@@ -44,7 +41,7 @@ namespace ShopManager.Menus
             Console.SetCursorPosition(0, 0);
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Меню Администратора: {Login}                                                                                                              ");
+            Console.WriteLine($"Меню Администратора: {label}                                                                                                              ");
             Console.ResetColor();
 
             Console.SetCursorPosition(89, 1);
@@ -143,7 +140,7 @@ namespace ShopManager.Menus
                         break;
 
                     case ConsoleKey.Escape:
-                        
+                        MainMenu.Run();
                         break;
                 }
             }
