@@ -462,11 +462,26 @@ namespace ShopManager.Menus
             Console.Clear();
 
             List<User> users = FileManager.ReadUsersFromFile();
-            List<User> FoundUsers = null;
+            List<string> stringUsers = new List<string>();
+            List<User> FoundUsers = new List<User>();
 
             Console.WriteLine("Меню поиска. ");
             Console.Write("Поиск: ");
             string search = Console.ReadLine();
+
+            foreach(User user in users)
+            {
+                stringUsers.Add("daddad");
+            }
+            stringUsers.Add("uuuuuuu");
+
+            stringUsers.FindAll(x => x.Contains("seat"));
+
+            foreach (string stringU in stringUsers)
+            {
+                Console.Write(stringU);
+            }
+
         }
 
         public void Update(int Index)

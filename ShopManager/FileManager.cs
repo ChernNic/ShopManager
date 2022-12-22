@@ -10,31 +10,31 @@ namespace ShopManager
     {
         static public void SaveToFile<T>(T list, string path)
         {
-            if (!File.Exists(path))
+            if (!File.Exists(Environment.SystemDirectory + path))
             {
-                FileStream fileStream = File.Create(path);
+                FileStream fileStream = File.Create(Environment.SystemDirectory + "/" + path);
                 fileStream.Dispose();
             }
 
             string json = JsonConvert.SerializeObject(list);
-            File.WriteAllText(path, json);
+            File.WriteAllText(Environment.SystemDirectory + "/" + path, json);
         }
 
         static public List<User> ReadUsersFromFile()
         {
             List<User> users;
-            if (!File.Exists("Users.json"))
+            if (!File.Exists(Environment.SystemDirectory + "/" + "Users.json"))
             {
-                FileStream fileStream = File.Create("Users.json");
+                FileStream fileStream = File.Create(Environment.SystemDirectory + "/" + "Users.json");
                 fileStream.Dispose();
 
                 users = new List<User>();
                 users.Add(new User(0, 0, "Admin", "Admin"));
-                SaveToFile(users, "Users.json");
+                SaveToFile(users, Environment.SystemDirectory + "/" + "Users.json");
             }
             else
             {
-                string usersInfo = File.ReadAllText("Users.json");
+                string usersInfo = File.ReadAllText(Environment.SystemDirectory + "/" + "Users.json");
                 users = JsonConvert.DeserializeObject<List<User>>(usersInfo);
             }
             return users;
@@ -43,13 +43,13 @@ namespace ShopManager
         static public List<T> ReadFromFile<T>(string path)
         {
             List<T> result;
-            if (!File.Exists(path))
+            if (!File.Exists(Environment.SystemDirectory + "/" + path))
             {
-                FileStream fileStream = File.Create(path);
+                FileStream fileStream = File.Create(Environment.SystemDirectory + "/" + path);
                 fileStream.Dispose();
             }
 
-            string resultInfo = File.ReadAllText(path);
+            string resultInfo = File.ReadAllText(Environment.SystemDirectory + "/" + path);
             result = JsonConvert.DeserializeObject<List<T>>(resultInfo);
 
             return result;
